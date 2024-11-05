@@ -1,6 +1,6 @@
-import { configureStore } from '@reduxjs/toolkit'
-import { apiSlice } from './api/apiSlice'
-import { cartReducer } from './cartSlice'
+import { configureStore } from '@reduxjs/toolkit';
+import { apiSlice } from './api/apiSlice';
+import { cartReducer } from './cartSlice';
 
 export const store = configureStore({
     reducer: {
@@ -10,6 +10,15 @@ export const store = configureStore({
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(apiSlice.middleware),
 })
+
+store.subscribe(() => {
+    const { products } = store.getState().cart;
+    try {
+        localStorage.setItem('cart', JSON.stringify(products));
+    } catch (error) {
+        console.error("Error saving cart to localStorage:", error);
+    }
+});
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>

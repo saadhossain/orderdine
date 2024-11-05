@@ -9,7 +9,7 @@ interface InitialState {
     }[]
 }
 const initialState: InitialState = {
-    products: []
+    products: JSON.parse(localStorage.getItem('cart') || '[]')
 }
 
 export const cartSlice = createSlice({
